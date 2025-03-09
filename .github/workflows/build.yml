@@ -7,6 +7,12 @@ on:
     #   - "mcp-servers/**/*.json"
   workflow_dispatch: # Allows manual triggering
 
+# Permissions
+permissions:
+  contents: read
+  # Required for actions/upload-artifact
+  actions: write
+
 jobs:
   build:
     name: Build Combined Repository JSON

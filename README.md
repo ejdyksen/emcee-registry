@@ -4,10 +4,6 @@ This repo stores the package definitions for MCP servers.
 
 ## Combined Repository JSON
 
-The MCP server definitions from this repository are automatically combined and published to GitHub Pages at:
-
-**https://[owner].[repo].github.io/repository.json**
-
 This URL provides a single JSON file containing all server definitions, which is automatically updated whenever changes are pushed to the repository.
 
 ### How It Works

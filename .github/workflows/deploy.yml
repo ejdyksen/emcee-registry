@@ -10,12 +10,23 @@ on:
       - master
   workflow_dispatch: # Allows manual triggering
 
-# Permissions needed for GitHub Pages deployment
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+  actions: read # Required to download artifacts
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
@@ -24,7 +35,7 @@ jobs:
       - name: Checkout repository for deployment
         uses: actions/checkout@v4
 
-      - name: Download artifact
+      - name: Download artifact from build workflow
         uses: dawidd6/action-download-artifact@v6
         with:
           workflow: build.yml
@@ -74,8 +85,14 @@ jobs:
             exit 1
           fi
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.5.0
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          folder: public
-          clean: true
+          path: "public"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

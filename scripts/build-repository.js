@@ -75,29 +75,22 @@ const indexHtml = `
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>MCP Server Definitions</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        line-height: 1.6;
-        padding: 2em;
-        max-width: 800px;
-        margin: 0 auto;
-        text-align: center;
-      }
-      pre, code, .monospace {
         font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+        font-size: 12px;
       }
     </style>
   </head>
   <body>
-    <p class="monospace">
-      <a href="repository.json">emcee-cli repository</a>
+    <p>
+      <a href="repository.json">repository.json</a>
     </p>
   </body>
 </html>
+
 `;
 fs.writeFileSync(path.join(outputDir, "index.html"), indexHtml);
 console.log("📄 Created index.html");

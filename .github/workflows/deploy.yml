@@ -1,0 +1,73 @@
+name: Deploy to GitHub Pages
+
+on:
+  workflow_run:
+    workflows: ["Build Repository JSON"]
+    types:
+      - completed
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - name: Checkout repository for deployment
+        uses: actions/checkout@v3
+
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: build.yml
+          name: repository-site
+          path: public
+          if_no_artifact_found: warn
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+
+      # If manually triggered and no artifact, build it
+      - name: Set up Node.js (manual trigger fallback)
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Dependencies (manual trigger fallback)
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: npm install glob
+
+      - name: Build repository files (manual trigger fallback)
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          # Only run if the public directory doesn't exist or is empty
+          if [ ! -d "public" ] || [ -z "$(ls -A public 2>/dev/null)" ]; then
+            echo "No artifacts found from build job, building locally..."
+
+            # Validate JSON files first
+            node scripts/validate-json.js
+
+            # Build repository.json and index.html directly to public directory
+            node scripts/build-repository.js public
+          else
+            echo "Using existing artifacts from previous build."
+          fi
+
+      - name: Verify deployment files
+        run: |
+          echo "Files to be deployed:"
+          ls -la public/ || echo "Error: public directory not found"
+
+          if [ -f "public/repository.json" ]; then
+            echo "repository.json exists:"
+            cat public/repository.json
+          else
+            echo "Error: repository.json not found in public directory"
+            exit 1
+          fi
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: public
+          clean: true

@@ -1,6 +1,53 @@
 # Emcee repository
 
-This repo stores the package definitions for MCP servers. The Hit
+This repo stores the package definitions for MCP servers.
+
+## Combined Repository JSON
+
+The MCP server definitions from this repository are automatically combined and published to GitHub Pages at:
+
+**https://[owner].[repo].github.io/repository.json**
+
+This URL provides a single JSON file containing all server definitions, which is automatically updated whenever changes are pushed to the repository.
+
+### How It Works
+
+The repository uses two separate GitHub Actions workflows:
+
+1. **Build Workflow**: Triggered when changes are made to JSON files in the `mcp-servers` directory.
+
+   - Validates all JSON files to ensure they're correctly formatted
+   - Combines them into a single `repository.json` file
+   - Creates a build artifact that contains the result
+
+2. **Deploy Workflow**: Triggered after the build workflow completes successfully.
+   - Downloads the build artifact from the build workflow
+   - Deploys the combined repository.json to GitHub Pages
+
+This separation allows for better diagnostics if any issues occur during the build or deploy process.
+
+### Local Development
+
+To test the build process locally without pushing to GitHub:
+
+```bash
+# Install dependencies
+npm install
+
+# Run validation only
+npm run validate
+
+# Run the full build process
+npm run build
+# Or run directly with a custom output directory:
+# node scripts/build-repository.js my-output-dir
+
+# Open the generated index.html to preview the result
+open build/index.html
+
+# Clean up build artifacts when done
+npm run clean
+```
 
 ## Repository Format
 

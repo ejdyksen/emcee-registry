@@ -1,0 +1,47 @@
+name: Build Repository JSON
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "mcp-servers/**/*.json"
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  build:
+    name: Build Combined Repository JSON
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Dependencies
+        run: npm install glob
+
+      - name: Validate JSON Files
+        id: validate
+        run: |
+          echo "Validating server definition JSON files..."
+          node scripts/validate-json.js
+
+      - name: Combine Server Definitions
+        id: combine
+        run: |
+          # Use the dedicated build script
+          node scripts/build-repository.js public
+
+          # Display contents of repository.json for verification
+          echo "Contents of repository.json:"
+          cat public/repository.json
+
+      - name: Create artifact for deployment
+        uses: actions/upload-artifact@v3
+        with:
+          name: repository-site
+          path: public/
+          retention-days: 7

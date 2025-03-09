@@ -1,0 +1,13 @@
+{
+  "name": "emcee-repository",
+  "version": "1.0.0",
+  "description": "Repository of MCP server definitions",
+  "scripts": {
+    "validate": "node scripts/validate-json.js",
+    "build": "node scripts/build-repository.js build",
+    "clean": "rm -rf build/ public/"
+  },
+  "dependencies": {
+    "glob": "^11.0.1"
+  }
+}

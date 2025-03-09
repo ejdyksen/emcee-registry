@@ -1,0 +1,20 @@
+{
+  "https://github.com/modelcontextprotocol/servers/tree/main/src/google-maps": {
+    "name": "google-maps",
+    "description": "Google Maps",
+    "installationMethods": {
+      "nodeModule": {
+        "npmPackage": "@modelcontextprotocol/server-google-maps",
+        "envVars": {
+          "GOOGLE_MAPS_API_KEY": "Google Maps API key"
+        }
+      },
+      "docker": {
+        "image": "modelcontextprotocol/server-google-maps",
+        "envVars": {
+          "GOOGLE_MAPS_API_KEY": "Google Maps API key"
+        }
+      }
+    }
+  }
+}

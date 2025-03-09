@@ -1,10 +1,13 @@
-name: Deploy to GitHub Pages
+name: deploy
 
 on:
   workflow_run:
-    workflows: ["Build Repository JSON"]
+    workflows: ["build"]
     types:
       - completed
+    branches:
+      - main
+      - master
   workflow_dispatch: # Allows manual triggering
 
 jobs:
@@ -15,23 +18,24 @@ jobs:
 
     steps:
       - name: Checkout repository for deployment
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download artifact
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v6
         with:
           workflow: build.yml
           name: repository-site
           path: public
           if_no_artifact_found: warn
+          allow_forks: false # Security: Prevent artifact poisoning by excluding forks
         if: ${{ github.event_name != 'workflow_dispatch' }}
 
       # If manually triggered and no artifact, build it
       - name: Set up Node.js (manual trigger fallback)
         if: ${{ github.event_name == 'workflow_dispatch' }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "20"
 
       - name: Install Dependencies (manual trigger fallback)
         if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -67,7 +71,7 @@ jobs:
           fi
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@v4.5.0
         with:
           folder: public
           clean: true

@@ -1,10 +1,10 @@
-name: Build Repository JSON
+name: build
 
 on:
   push:
-    branches: [main]
-    paths:
-      - "mcp-servers/**/*.json"
+    branches: [main, master] # Include both main and master as common default branches
+    # paths:
+    #   - "mcp-servers/**/*.json"
   workflow_dispatch: # Allows manual triggering
 
 jobs:
@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: "18"
+          node-version: "20"
 
       - name: Install Dependencies
         run: npm install glob
@@ -40,7 +40,7 @@ jobs:
           cat public/repository.json
 
       - name: Create artifact for deployment
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: repository-site
           path: public/

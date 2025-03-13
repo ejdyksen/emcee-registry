@@ -2,110 +2,54 @@
 
 This repo stores the package definitions for MCP servers.
 
-## Combined Repository JSON
+## Package Specification
 
-The MCP server definitions from this repository are automatically combined and published to GitHub Pages at:
+| Field                   | Description                               |
+| ----------------------- | ----------------------------------------- |
+| **id**                  | Unique identifier for the server.         |
+| **url**                 | URL to the server's source code.          |
+| **name**                | Name of the server.                       |
+| aliases                 | List of alternative names for the server. |
+| description             | Description of the server.                |
+| **installationMethods** | Methods to install the server.            |
 
-**https://[owner].[repo].github.io/repository.json**
+Note: If the server is hosted on GitHub, the `id` field is a shorthand like this:
 
-This URL provides a single JSON file containing all server definitions, which is automatically updated whenever changes are pushed to the repository.
-
-### How It Works
-
-The repository uses two separate GitHub Actions workflows:
-
-1. **Build Workflow** (`build.yml`): Triggered when changes are pushed to the repository.
-
-   - Validates all JSON files to ensure they're correctly formatted
-   - Combines them into a single `repository.json` file
-   - Creates a build artifact that contains the result
-
-2. **Deploy Workflow** (`deploy.yml`): Triggered after the build workflow completes successfully.
-   - Downloads the build artifact from the build workflow
-   - Uses GitHub's official Pages deployment actions to publish to GitHub Pages
-   - Provides a URL to the deployed site in the workflow summary
-
-This separation allows for better diagnostics if any issues occur during the build or deploy process.
-
-### Local Development
-
-To test the build process locally without pushing to GitHub:
-
-```bash
-# Install dependencies
-npm install
-
-# Run validation only
-npm run validate
-
-# Run the full build process
-npm run build
-# Or run directly with a custom output directory:
-# node scripts/build-repository.js my-output-dir
-
-# Open the generated index.html to preview the result
-open build/index.html
-
-# Clean up build artifacts when done
-npm run clean
+```
+github:username/repo#subdirectory
 ```
 
-## Repository Format
+Subdirectories are optional but useful for repositories that host more than one MCP server (like [the official MCP server repo](http://github.com/modelcontextprotocol/servers)).
 
-The repository contains detailed information about available MCP servers, their installation methods, and required environment variables:
+If the server is hosted elsewhere, the `id` field should just be a url (like `https://gitlab.com/username/repo`).
 
-```json
-{
-  "mcpServers": {
-    "https://github.com/modelcontextprotocol/servers/tree/main/src/github": {
-      "name": "github",
-      "description": "GitHub server",
-      "installationMethods": {
-        "nodeModule": {
-          "npmPackage": "@modelcontextprotocol/server-github",
-          "envVars": {
-            "GITHUB_PERSONAL_ACCESS_TOKEN": "Your personal access token to Github"
-          }
-        },
-        "docker": {
-          "image": "modelcontextprotocol/server-github",
-          "envVars": {
-            "GITHUB_PERSONAL_ACCESS": "Your personal access token to Github"
-          }
-        }
-      }
-    },
-    "https://github.com/modelcontextprotocol/servers/tree/main/src/time": {
-      "name": "time",
-      "description": "Time server",
-      "installationMethods": {
-        "pythonModule": {
-          "pipPackage": "mcp-server-time"
-        },
-        "docker": {
-          "image": "mcp/time"
-        }
-      }
-    }
-  }
-}
-```
+We use this format because git is really the only common denominator with MCP servers, given they could be packaged/distributed any number of ways (Docker, NPM, etc).
 
-### Repository Format Description
+## Installation Methods
 
-- **mcpServers**: A map where:
-  - **Key**: The URL path to the server (which serves as a unique identifier)
-  - **Value**: Server definition object with:
-    - `name`: Human-readable server name (e.g., "github", "time")
-    - `description`: Brief description of the server's purpose
-    - `installationMethods`: Map of available installation methods:
-      - **Key**: Method name (e.g., "nodeModule", "pythonModule", "docker")
-      - **Value**: Method-specific configuration:
-        - For Node-based methods:
-          - `npmPackage`: NPM package name
-          - `envVars`: Required environment variables
-        - For Python-based methods:
-          - `pipPackage`: Python package name
-        - For Docker-based methods:
-          - `image`: Docker image name
-          - `envVars`: Required environment variables
+Installation methods are as generic as possible, and do not include specific commands (like `npx` or `uv`), as these are left up to the Emcee CLI (and the user's preferences). For example, just knowing it's a runnable NPM module is sufficient information for a client to install and run. At least one installation method is required.
+
+### Container
+
+| Field     | Description                                                 |
+| --------- | ----------------------------------------------------------- |
+| **image** | Docker image to use. Defaults to Docker Hub.                |
+| envVars   | Key/value list of environment variables (and values) to set |
+
+### Node Module
+
+| Field          | Description                                                               |
+| -------------- | ------------------------------------------------------------------------- |
+| **npmPackage** | Name of the npm package, sufficient to run `npm install` or `npx` against |
+| envVars        | Key/value list of environment variables (and values) to set               |
+
+### Python Module
+
+| Field          | Description                                                                         |
+| -------------- | ----------------------------------------------------------------------------------- |
+| **pipPackage** | Name of the pip package, sufficient to run `pip install` or `uvx` or `pipx` against |
+| envVars        | Key/value list of environment variables (and values) to set                         |
+
+## Output
+
+These package specs are combined and served at `[https://api.emcee-cli.com/repository.json](https://api.emcee-cli.com/repository.json)`. The `id` field is the key for each package.

@@ -1,19 +1,22 @@
 {
-  "https://github.com/modelcontextprotocol/servers/tree/main/src/github": {
-    "name": "github",
-    "description": "GitHub server",
-    "installationMethods": {
-      "nodeModule": {
-        "npmPackage": "@modelcontextprotocol/server-github",
-        "envVars": {
-          "GITHUB_PERSONAL_ACCESS_TOKEN": "Your personal access token to Github"
-        }
-      },
-      "docker": {
-        "image": "modelcontextprotocol/server-github",
-        "envVars": {
-          "GITHUB_PERSONAL_ACCESS": "Your personal access token to Github"
-        }
+  "id": "modelcontextprotocol/servers#github",
+  "url": "https://github.com/modelcontextprotocol/tree/main/src/github",
+  "name": "Github",
+  "aliases": [
+    "github"
+  ],
+  "description": "GitHub server",
+  "installationMethods": {
+    "nodeModule": {
+      "npmPackage": "@modelcontextprotocol/server-github",
+      "envVars": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "Your personal access token to Github"
+      }
+    },
+    "docker": {
+      "image": "modelcontextprotocol/server-github",
+      "envVars": {
+        "GITHUB_PERSONAL_ACCESS": "Your personal access token to Github"
       }
     }
   }

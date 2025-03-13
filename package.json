@@ -5,9 +5,17 @@
   "scripts": {
     "validate": "node scripts/validate-json.js",
     "build": "node scripts/build-repository.js build",
-    "clean": "rm -rf build/ public/"
+    "clean": "rm -rf build/ public/",
+    "build:ts": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc && node dist/index.js"
   },
   "dependencies": {
-    "glob": "^11.0.1"
+    "@anthropic-ai/sdk": "^0.39.0",
+    "axios": "^1.8.3",
+    "commander": "^13.1.0",
+    "dotenv": "^16.4.7",
+    "glob": "^11.0.1",
+    "typescript": "^5.8.2"
   }
 }

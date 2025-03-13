@@ -1,14 +1,17 @@
 {
-  "https://github.com/modelcontextprotocol/servers/tree/main/src/time": {
-    "name": "time",
-    "description": "Time server",
-    "installationMethods": {
-      "pythonModule": {
-        "pipPackage": "mcp-server-time"
-      },
-      "docker": {
-        "image": "mcp/time"
-      }
+  "id": "modelcontextprotocol/servers#time",
+  "url": "https://github.com/modelcontextprotocol/tree/main/src/time",
+  "name": "Time",
+  "aliases": [
+    "time"
+  ],
+  "description": "Time server",
+  "installationMethods": {
+    "pythonModule": {
+      "pipPackage": "mcp-server-time"
+    },
+    "docker": {
+      "image": "mcp/time"
     }
   }
 }

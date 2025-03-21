@@ -39,15 +39,15 @@ jobs:
         id: combine
         run: |
           # Use the dedicated build script
-          node scripts/build-repository.js public
+          node scripts/build-registry.js public
 
-          # Display contents of repository.json for verification
-          echo "Contents of repository.json:"
-          cat public/repository.json
+          # Display contents of registry.json for verification
+          echo "Contents of registry.json:"
+          cat public/registry.json
 
       - name: Create artifact for deployment
         uses: actions/upload-artifact@v4
         with:
-          name: repository-site
+          name: registry-site
           path: public/
           retention-days: 7

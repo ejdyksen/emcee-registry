@@ -1,17 +1,21 @@
-# Emcee repository
+# Emcee registry
 
 This repo stores the package definitions for MCP servers.
 
 ## Package Specification
 
-| Field                   | Description                               |
-| ----------------------- | ----------------------------------------- |
-| **id**                  | Unique identifier for the server.         |
-| **url**                 | URL to the server's source code.          |
-| **name**                | Name of the server.                       |
-| aliases                 | List of alternative names for the server. |
-| description             | Description of the server.                |
-| **installationMethods** | Methods to install the server.            |
+| Field           | Description                                                          |
+| --------------- | -------------------------------------------------------------------- |
+| **id**          | Unique identifier for the server. Shorthanded for Github, see below. |
+| **url**         | HTTPS åßURL to the git repository that hosts the MCP server          |
+| **description** | A brief description of this MCP server                               |
+| aliases         | List of alternative names for the server.                            |
+| description     | Description of the server.                                           |
+| envVars         | Key/value list of environment variables (and values) to set          |
+
+| **installationMethods** | Methods to install the server. See below |
+
+### id
 
 Note: If the server is hosted on GitHub, the `id` field is a shorthand like this:
 
@@ -23,7 +27,21 @@ Subdirectories are optional but useful for repositories that host more than one 
 
 If the server is hosted elsewhere, the `id` field should just be a url (like `https://gitlab.com/username/repo`).
 
+For brevity, he `id` field should not include the words `mcp` or `server` even though authors will typically add these to their repo name.
+
 We use this format because git is really the only common denominator with MCP servers, given they could be packaged/distributed any number of ways (Docker, NPM, etc).
+
+### aliases
+
+If the MCP server is an official project (e.g. the [Cloudflare MCP server](https://github.com/cloudflare/mcp-server-cloudflare)), or published by the Model Context Protocol project, or otherwise very well known, we can give it an alias so that it can be installed easily. Not all servers will have aliases, but it's a nice-to-have for the most common:
+
+```
+emcee install filesystem
+```
+
+## Environment variables
+
+Environment variables are key/value pairs that should be set when running the MCP server. These are typically used for configuration, like setting the port or the database connection string.
 
 ## Installation Methods
 
@@ -31,25 +49,36 @@ Installation methods are as generic as possible, and do not include specific com
 
 ### Container
 
-| Field     | Description                                                 |
-| --------- | ----------------------------------------------------------- |
-| **image** | Docker image to use. Defaults to Docker Hub.                |
-| envVars   | Key/value list of environment variables (and values) to set |
+This method relies on Docker to run the MCP server.
+
+| Field     | Description                                  |
+| --------- | -------------------------------------------- |
+| **image** | Docker image to use. Defaults to Docker Hub. |
 
 ### Node Module
+
+This method relies on having a published NPM package that can be run with `npx` or similar.
 
 | Field          | Description                                                               |
 | -------------- | ------------------------------------------------------------------------- |
 | **npmPackage** | Name of the npm package, sufficient to run `npm install` or `npx` against |
-| envVars        | Key/value list of environment variables (and values) to set               |
 
 ### Python Module
+
+This method relies on having a published Python package that can be run with `pip install` or `uvx` or `pipx`.
 
 | Field          | Description                                                                         |
 | -------------- | ----------------------------------------------------------------------------------- |
 | **pipPackage** | Name of the pip package, sufficient to run `pip install` or `uvx` or `pipx` against |
-| envVars        | Key/value list of environment variables (and values) to set                         |
+
+### Vanilla Node
+
+This method is for projects that need to be cloned, optionally built, and run with Node.js directly.
+
+| Field   | Description                                                     |
+| ------- | --------------------------------------------------------------- |
+| **url** | Not usually needed, as the git repo should be the same as above |
 
 ## Output
 
-These package specs are combined and served at `[https://api.emcee-cli.com/repository.json](https://api.emcee-cli.com/repository.json)`. The `id` field is the key for each package.
+These package specs are combined and served at `[https://api.emcee-cli.com/registry.json](https://api.emcee-cli.com/registry.json)`. The `id` field is the key for each package.

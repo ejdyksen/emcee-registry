@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /**
- * Script to build the combined repository.json file
+ * Script to build the combined registry.json file
  *
  * This script:
  * 1. Validates all server definition files
- * 2. Creates a combined repository.json file from all server definitions
+ * 2. Creates a combined registry.json file from all server definitions
  * 3. Generates a simple index.html page for GitHub Pages
  * 4. Outputs files to the specified output directory
  *
- * Usage: node build-repository.js [output-dir]
+ * Usage: node build-registry.js [output-dir]
  * Default output directory is "build"
  */
 
@@ -48,7 +48,7 @@ if (!fs.existsSync(outputDir)) {
 }
 
 // Create initial empty structure
-const outputPath = path.join(outputDir, "repository.json");
+const outputPath = path.join(outputDir, "registry.json");
 const output = { mcpServers: {} };
 fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
 
@@ -86,7 +86,7 @@ const indexHtml = `
   </head>
   <body>
     <p>
-      <a href="repository.json">repository.json</a>
+      <a href="registry.json">registry.json</a>
     </p>
   </body>
 </html>

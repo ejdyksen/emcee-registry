@@ -39,7 +39,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v6
         with:
           workflow: build.yml
-          name: repository-site
+          name: registry-site
           path: public
           if_no_artifact_found: warn
           allow_forks: false # Security: Prevent artifact poisoning by excluding forks
@@ -56,7 +56,7 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: npm install glob
 
-      - name: Build repository files (manual trigger fallback)
+      - name: Build registry files (manual trigger fallback)
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
           # Only run if the public directory doesn't exist or is empty
@@ -66,8 +66,8 @@ jobs:
             # Validate JSON files first
             node scripts/validate-json.js
 
-            # Build repository.json and index.html directly to public directory
-            node scripts/build-repository.js public
+            # Build registry.json and index.html directly to public directory
+            node scripts/build-registry.js public
           else
             echo "Using existing artifacts from previous build."
           fi
@@ -77,11 +77,11 @@ jobs:
           echo "Files to be deployed:"
           ls -la public/ || echo "Error: public directory not found"
 
-          if [ -f "public/repository.json" ]; then
-            echo "repository.json exists:"
-            cat public/repository.json
+          if [ -f "public/registry.json" ]; then
+            echo "registry.json exists:"
+            cat public/registry.json
           else
-            echo "Error: repository.json not found in public directory"
+            echo "Error: registry.json not found in public directory"
             exit 1
           fi
 

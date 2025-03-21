@@ -103,6 +103,6 @@ Try again with a different temperature setting (e.g., --temperature 0.1)
 
 ## Output
 
-The tool generates a package specification file in JSON format and saves it to the specified output directory. The file is organized in a subdirectory based on the first letter of the package name, following the convention used in the Emcee repository.
+The tool generates a package specification file in JSON format and saves it to the specified output directory. The file is organized in a subdirectory based on the first letter of the package name, following the convention used in the Emcee registry.
 
 For example, a package named "GitHub" would be saved to `mcp-servers/g/github.json`.

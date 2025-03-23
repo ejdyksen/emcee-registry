@@ -60,8 +60,13 @@ for (const file of files) {
   console.log(`- ${file}`);
   const content = JSON.parse(fs.readFileSync(file, "utf8"));
 
-  // Merge the content into the output
-  Object.assign(output.mcpServers, content);
+  // Use each server's id as the key in the registry
+  const server = content;
+  if (server.id) {
+    output.mcpServers[server.id] = server;
+  } else {
+    console.warn(`Warning: Server in ${file} has no id, skipping`);
+  }
 }
 
 // Write the combined output

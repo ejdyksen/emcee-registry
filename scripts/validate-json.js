@@ -120,10 +120,10 @@ for (const file of files) {
           fileErrors = true;
         }
 
-        // Support for gitRepo as per current files
-        if (method === "gitRepo" && !methodData.url) {
+        // Support for vanillaNode installation method
+        if (method === "vanillaNode" && !methodData.url) {
           console.log(
-            `${colors.red}ERROR: Missing 'url' for gitRepo installation method in ${file}${colors.reset}`
+            `${colors.red}ERROR: Missing 'url' for vanillaNode installation method in ${file}${colors.reset}`
           );
           fileErrors = true;
         }

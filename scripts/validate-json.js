@@ -121,9 +121,9 @@ for (const file of files) {
         }
 
         // Support for vanillaNode installation method
-        if (method === "vanillaNode" && !methodData.url) {
+        if (method === "vanillaNode" && !methodData.repositoryUrl) {
           console.log(
-            `${colors.red}ERROR: Missing 'url' for vanillaNode installation method in ${file}${colors.reset}`
+            `${colors.red}ERROR: Missing 'repositoryUrl' for vanillaNode installation method in ${file}${colors.reset}`
           );
           fileErrors = true;
         }

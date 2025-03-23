@@ -75,11 +75,11 @@ This method relies on having a published Python package that can be run with `pi
 
 This method (referenced as `vanillaNode` in the JSON) is for projects that need to be cloned, optionally built, and run with Node.js directly.
 
-| Field             | Description                                                     |
-| ----------------- | --------------------------------------------------------------- |
-| **url**           | Not usually needed, as the git repo should be the same as above |
-| **buildCommands** | Commands to run to build the server, if needed.                 |
-| **envVars**       | Environment variables required to run the server                |
+| Field             | Description                                      |
+| ----------------- | ------------------------------------------------ |
+| **repositoryUrl** | An https URL that you can run git clone with     |
+| **buildCommands** | Commands to run to build the server, if needed.  |
+| **envVars**       | Environment variables required to run the server |
 
 ## Output
 

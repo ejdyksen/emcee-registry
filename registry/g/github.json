@@ -6,18 +6,34 @@
     "github"
   ],
   "description": "GitHub server",
-  "installationMethods": {
-    "nodeModule": {
-      "npmPackage": "@modelcontextprotocol/server-github",
+  "installationOptions": [
+    {
+      "dependencies": [
+        "node"
+      ],
+      "buildCommands": [
+        "npm install -g @modelcontextprotocol/server-github"
+      ],
+      "runCommands": [
+        "npx @modelcontextprotocol/server-github"
+      ],
       "envVars": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "Your personal access token to Github"
       }
     },
-    "docker": {
-      "image": "mcp/github",
+    {
+      "dependencies": [
+        "docker"
+      ],
+      "buildCommands": [
+        "docker pull mcp/github"
+      ],
+      "runCommands": [
+        "docker run -e GITHUB_PERSONAL_ACCESS_TOKEN mcp/github"
+      ],
       "envVars": {
-        "GITHUB_PERSONAL_ACCESS": "Your personal access token to Github"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "Your personal access token to Github"
       }
     }
-  }
+  ]
 }

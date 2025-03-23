@@ -6,12 +6,30 @@
     "time"
   ],
   "description": "Time server",
-  "installationMethods": {
-    "pythonModule": {
-      "pipPackage": "mcp-server-time"
+  "installationOptions": [
+    {
+      "dependencies": [
+        "python"
+      ],
+      "buildCommands": [
+        "pip install mcp-server-time"
+      ],
+      "runCommands": [
+        "python -m mcp_server_time"
+      ],
+      "envVars": {}
     },
-    "docker": {
-      "image": "mcp/time"
+    {
+      "dependencies": [
+        "docker"
+      ],
+      "buildCommands": [
+        "docker pull mcp/time"
+      ],
+      "runCommands": [
+        "docker run mcp/time"
+      ],
+      "envVars": {}
     }
-  }
+  ]
 }

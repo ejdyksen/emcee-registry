@@ -6,25 +6,18 @@ export interface EnvironmentVariables {
   [key: string]: string;
 }
 
-export interface NodeModuleInstallation {
-  npmPackage: string;
-  envVars?: EnvironmentVariables;
-}
+export type Dependency =
+  | "docker"
+  | "node"
+  | "python"
+  | "docker-compose"
+  | string;
 
-export interface PythonModuleInstallation {
-  pipPackage: string;
+export interface InstallationOption {
+  dependencies: Dependency[];
+  buildCommands?: string[];
+  runCommands: string[];
   envVars?: EnvironmentVariables;
-}
-
-export interface DockerInstallation {
-  image: string;
-  envVars?: EnvironmentVariables;
-}
-
-export interface InstallationMethods {
-  nodeModule?: NodeModuleInstallation;
-  pythonModule?: PythonModuleInstallation;
-  docker?: DockerInstallation;
 }
 
 export interface PackageSpec {
@@ -33,7 +26,7 @@ export interface PackageSpec {
   name: string;
   aliases?: string[];
   description?: string;
-  installationMethods: InstallationMethods;
+  installationOptions: InstallationOption[];
 }
 
 export interface Repository {

@@ -1,0 +1,177 @@
+{
+  "mcpServers": {
+    "modelcontextprotocol/servers#time": {
+      "id": "modelcontextprotocol/servers#time",
+      "url": "https://github.com/modelcontextprotocol/servers/tree/main/src/time",
+      "name": "Time",
+      "aliases": [
+        "time"
+      ],
+      "description": "Time server",
+      "installationOptions": [
+        {
+          "dependencies": [
+            "python"
+          ],
+          "buildCommands": [
+            "pip install mcp-server-time"
+          ],
+          "runCommands": [
+            "python -m mcp_server_time"
+          ],
+          "envVars": {}
+        },
+        {
+          "dependencies": [
+            "docker"
+          ],
+          "buildCommands": [
+            "docker pull mcp/time"
+          ],
+          "runCommands": [
+            "docker run mcp/time"
+          ],
+          "envVars": {}
+        }
+      ]
+    },
+    "modelcontextprotocol/servers#google-maps": {
+      "id": "modelcontextprotocol/servers#google-maps",
+      "url": "https://github.com/modelcontextprotocol/servers/tree/main/src/google-maps",
+      "name": "Google Maps",
+      "aliases": [
+        "google-maps"
+      ],
+      "description": "MCP Server for the Google Maps API",
+      "installationOptions": [
+        {
+          "dependencies": [
+            "node"
+          ],
+          "buildCommands": [
+            "npm install -g @modelcontextprotocol/server-google-maps"
+          ],
+          "runCommands": [
+            "npx @modelcontextprotocol/server-google-maps"
+          ],
+          "envVars": {
+            "GOOGLE_MAPS_API_KEY": "Google Maps API key"
+          }
+        },
+        {
+          "dependencies": [
+            "docker"
+          ],
+          "buildCommands": [
+            "docker pull mcp/google-maps"
+          ],
+          "runCommands": [
+            "docker run -e GOOGLE_MAPS_API_KEY mcp/google-maps"
+          ],
+          "envVars": {
+            "GOOGLE_MAPS_API_KEY": "Google Maps API key"
+          }
+        }
+      ]
+    },
+    "modelcontextprotocol/servers#github": {
+      "id": "modelcontextprotocol/servers#github",
+      "url": "https://github.com/modelcontextprotocol/servers/tree/main/src/github",
+      "name": "Github",
+      "aliases": [
+        "github"
+      ],
+      "description": "GitHub server",
+      "installationOptions": [
+        {
+          "dependencies": [
+            "node"
+          ],
+          "buildCommands": [
+            "npm install -g @modelcontextprotocol/server-github"
+          ],
+          "runCommands": [
+            "npx @modelcontextprotocol/server-github"
+          ],
+          "envVars": {
+            "GITHUB_PERSONAL_ACCESS_TOKEN": "Your personal access token to Github"
+          }
+        },
+        {
+          "dependencies": [
+            "docker"
+          ],
+          "buildCommands": [
+            "docker pull mcp/github"
+          ],
+          "runCommands": [
+            "docker run -e GITHUB_PERSONAL_ACCESS_TOKEN mcp/github"
+          ],
+          "envVars": {
+            "GITHUB_PERSONAL_ACCESS_TOKEN": "Your personal access token to Github"
+          }
+        }
+      ]
+    },
+    "sunsetcoder/flightradar24": {
+      "id": "sunsetcoder/flightradar24",
+      "url": "https://github.com/sunsetcoder/flightradar24-mcp-server",
+      "name": "Flightradar24",
+      "aliases": [
+        "flightradar24"
+      ],
+      "description": "A Claude Desktop MCP server that helps you track flights in real-time using Flightradar24 data. Perfect for aviation enthusiasts, travel planners, or anyone curious about flights overhead!",
+      "installationOptions": [
+        {
+          "dependencies": [
+            "node",
+            "git"
+          ],
+          "buildCommands": [
+            "git clone https://github.com/sunsetcoder/flightradar24-mcp-server.git",
+            "cd flightradar24-mcp-server",
+            "npm install",
+            "npm run build"
+          ],
+          "runCommands": [
+            "cd flightradar24-mcp-server",
+            "node dist/index.js"
+          ],
+          "envVars": {
+            "FR24_API_KEY": "Your Flightradar24 API key",
+            "FR24_API_URL": "https://fr24api.flightradar24.com"
+          }
+        }
+      ]
+    },
+    "alexei-led/aws-mcp-server": {
+      "id": "alexei-led/aws-mcp-server",
+      "url": "https://github.com/alexei-led/aws-mcp-server",
+      "name": "AWS",
+      "aliases": [
+        "aws"
+      ],
+      "description": "A lightweight service that enables AI assistants to execute AWS CLI commands through the Model Context Protocol (MCP)",
+      "installationOptions": [
+        {
+          "dependencies": [
+            "docker",
+            "docker-compose"
+          ],
+          "buildCommands": [
+            "git clone https://github.com/alexei-led/aws-mcp-server.git",
+            "cd aws-mcp-server && docker-compose build"
+          ],
+          "runCommands": [
+            "cd aws-mcp-server && docker-compose up -d"
+          ],
+          "envVars": {
+            "AWS_ACCESS_KEY_ID": "Your AWS access key",
+            "AWS_SECRET_ACCESS_KEY": "Your AWS secret key",
+            "AWS_REGION": "Your AWS region"
+          }
+        }
+      ]
+    }
+  }
+}

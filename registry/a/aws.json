@@ -1,0 +1,29 @@
+{
+  "id": "alexei-led/aws-mcp-server",
+  "url": "https://github.com/alexei-led/aws-mcp-server",
+  "name": "AWS",
+  "aliases": [
+    "aws"
+  ],
+  "description": "A lightweight service that enables AI assistants to execute AWS CLI commands through the Model Context Protocol (MCP)",
+  "installationOptions": [
+    {
+      "dependencies": [
+        "docker",
+        "docker-compose"
+      ],
+      "buildCommands": [
+        "git clone https://github.com/alexei-led/aws-mcp-server.git",
+        "cd aws-mcp-server && docker-compose build"
+      ],
+      "runCommands": [
+        "cd aws-mcp-server && docker-compose up -d"
+      ],
+      "envVars": {
+        "AWS_ACCESS_KEY_ID": "Your AWS access key",
+        "AWS_SECRET_ACCESS_KEY": "Your AWS secret key",
+        "AWS_REGION": "Your AWS region"
+      }
+    }
+  ]
+}

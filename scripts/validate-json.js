@@ -78,6 +78,13 @@ for (const file of files) {
       fileErrors = true;
     }
 
+    if (!server.name) {
+      console.log(
+        `${colors.red}ERROR: Missing 'name' field in ${file}${colors.reset}`
+      );
+      fileErrors = true;
+    }
+
     if (!server.description) {
       console.log(
         `${colors.yellow}WARNING: Missing 'description' field in ${file}${colors.reset}`
@@ -85,49 +92,56 @@ for (const file of files) {
     }
 
     if (
-      !server.installationMethods ||
-      Object.keys(server.installationMethods).length === 0
+      !server.installationOptions ||
+      !Array.isArray(server.installationOptions) ||
+      server.installationOptions.length === 0
     ) {
       console.log(
-        `${colors.red}ERROR: No installation methods defined in ${file}${colors.reset}`
+        `${colors.red}ERROR: Missing or invalid 'installationOptions' array in ${file}${colors.reset}`
       );
       fileErrors = true;
     } else {
-      // Validate each installation method
-      const methods = server.installationMethods;
-      for (const method of Object.keys(methods)) {
-        const methodData = methods[method];
-
-        // Check method-specific required fields
-        if (method === "nodeModule" && !methodData.npmPackage) {
+      // Validate each installation option
+      server.installationOptions.forEach((option, index) => {
+        if (
+          !option.dependencies ||
+          !Array.isArray(option.dependencies) ||
+          option.dependencies.length === 0
+        ) {
           console.log(
-            `${colors.red}ERROR: Missing 'npmPackage' for nodeModule installation method in ${file}${colors.reset}`
+            `${colors.red}ERROR: Missing or invalid 'dependencies' array in installationOption ${index} in ${file}${colors.reset}`
           );
           fileErrors = true;
         }
 
-        if (method === "pythonModule" && !methodData.pipPackage) {
+        if (
+          !option.runCommands ||
+          !Array.isArray(option.runCommands) ||
+          option.runCommands.length === 0
+        ) {
           console.log(
-            `${colors.red}ERROR: Missing 'pipPackage' for pythonModule installation method in ${file}${colors.reset}`
+            `${colors.red}ERROR: Missing or invalid 'runCommands' array in installationOption ${index} in ${file}${colors.reset}`
           );
           fileErrors = true;
         }
 
-        if (method === "docker" && !methodData.image) {
+        if (
+          option.buildCommands &&
+          (!Array.isArray(option.buildCommands) ||
+            option.buildCommands.length === 0)
+        ) {
           console.log(
-            `${colors.red}ERROR: Missing 'image' for docker installation method in ${file}${colors.reset}`
+            `${colors.yellow}WARNING: 'buildCommands' is present but empty or not an array in installationOption ${index} in ${file}${colors.reset}`
           );
-          fileErrors = true;
         }
 
-        // Support for vanillaNode installation method
-        if (method === "vanillaNode" && !methodData.repositoryUrl) {
+        if (option.envVars && typeof option.envVars !== "object") {
           console.log(
-            `${colors.red}ERROR: Missing 'repositoryUrl' for vanillaNode installation method in ${file}${colors.reset}`
+            `${colors.red}ERROR: 'envVars' is not an object in installationOption ${index} in ${file}${colors.reset}`
           );
           fileErrors = true;
         }
-      }
+      });
     }
 
     if (fileErrors) {

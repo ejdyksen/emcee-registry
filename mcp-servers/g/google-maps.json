@@ -14,7 +14,7 @@
       }
     },
     "container": {
-      "image": "modelcontextprotocol/server-google-maps",
+      "image": "mcp/google-maps",
       "envVars": {
         "GOOGLE_MAPS_API_KEY": "Google Maps API key"
       }

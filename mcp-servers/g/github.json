@@ -14,7 +14,7 @@
       }
     },
     "docker": {
-      "image": "modelcontextprotocol/server-github",
+      "image": "mcp/github",
       "envVars": {
         "GITHUB_PERSONAL_ACCESS": "Your personal access token to Github"
       }

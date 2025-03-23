@@ -1,6 +1,6 @@
 {
   "id": "modelcontextprotocol/servers#time",
-  "url": "https://github.com/modelcontextprotocol/tree/main/src/time",
+  "url": "https://github.com/modelcontextprotocol/servers/tree/main/src/time",
   "name": "Time",
   "aliases": [
     "time"

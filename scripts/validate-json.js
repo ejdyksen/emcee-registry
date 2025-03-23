@@ -59,71 +59,73 @@ for (const file of files) {
       continue;
     }
 
-    // Check the structure
-    const serverIds = Object.keys(json);
-
-    if (serverIds.length === 0) {
-      console.log(
-        `${colors.yellow}WARNING: No server definitions found${colors.reset}`
-      );
-      continue;
-    }
-
+    // Each file contains a single server definition
+    const server = json;
     let fileErrors = false;
 
-    // Validate each server definition
-    for (const serverId of serverIds) {
-      const server = json[serverId];
+    // Check required fields as per README spec
+    if (!server.id) {
+      console.log(
+        `${colors.red}ERROR: Missing 'id' field in ${file}${colors.reset}`
+      );
+      fileErrors = true;
+    }
 
-      // Check required fields
-      if (!server.name) {
-        console.log(
-          `${colors.red}ERROR: Missing 'name' for server ${serverId}${colors.reset}`
-        );
-        fileErrors = true;
-      }
+    if (!server.url) {
+      console.log(
+        `${colors.red}ERROR: Missing 'url' field in ${file}${colors.reset}`
+      );
+      fileErrors = true;
+    }
 
-      if (!server.description) {
-        console.log(
-          `${colors.yellow}WARNING: Missing 'description' for server ${serverId}${colors.reset}`
-        );
-      }
+    if (!server.description) {
+      console.log(
+        `${colors.yellow}WARNING: Missing 'description' field in ${file}${colors.reset}`
+      );
+    }
 
-      if (
-        !server.installationMethods ||
-        Object.keys(server.installationMethods).length === 0
-      ) {
-        console.log(
-          `${colors.red}ERROR: No installation methods defined for server ${serverId}${colors.reset}`
-        );
-        fileErrors = true;
-      } else {
-        // Validate each installation method
-        const methods = server.installationMethods;
-        for (const method of Object.keys(methods)) {
-          const methodData = methods[method];
+    if (
+      !server.installationMethods ||
+      Object.keys(server.installationMethods).length === 0
+    ) {
+      console.log(
+        `${colors.red}ERROR: No installation methods defined in ${file}${colors.reset}`
+      );
+      fileErrors = true;
+    } else {
+      // Validate each installation method
+      const methods = server.installationMethods;
+      for (const method of Object.keys(methods)) {
+        const methodData = methods[method];
 
-          // Check method-specific required fields
-          if (method === "nodeModule" && !methodData.npmPackage) {
-            console.log(
-              `${colors.red}ERROR: Missing 'npmPackage' for nodeModule installation method of ${serverId}${colors.reset}`
-            );
-            fileErrors = true;
-          }
+        // Check method-specific required fields
+        if (method === "nodeModule" && !methodData.npmPackage) {
+          console.log(
+            `${colors.red}ERROR: Missing 'npmPackage' for nodeModule installation method in ${file}${colors.reset}`
+          );
+          fileErrors = true;
+        }
 
-          if (method === "pythonModule" && !methodData.pipPackage) {
-            console.log(
-              `${colors.red}ERROR: Missing 'pipPackage' for pythonModule installation method of ${serverId}${colors.reset}`
-            );
-            fileErrors = true;
-          }
+        if (method === "pythonModule" && !methodData.pipPackage) {
+          console.log(
+            `${colors.red}ERROR: Missing 'pipPackage' for pythonModule installation method in ${file}${colors.reset}`
+          );
+          fileErrors = true;
+        }
 
-          if (method === "docker" && !methodData.image) {
-            console.log(
-              `${colors.red}ERROR: Missing 'image' for docker installation method of ${serverId}${colors.reset}`
-            );
-            fileErrors = true;
-          }
+        if (method === "docker" && !methodData.image) {
+          console.log(
+            `${colors.red}ERROR: Missing 'image' for docker installation method in ${file}${colors.reset}`
+          );
+          fileErrors = true;
+        }
+
+        // Support for gitRepo as per current files
+        if (method === "gitRepo" && !methodData.url) {
+          console.log(
+            `${colors.red}ERROR: Missing 'url' for gitRepo installation method in ${file}${colors.reset}`
+          );
+          fileErrors = true;
         }
       }
     }

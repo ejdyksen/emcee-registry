@@ -53,7 +53,7 @@ const output = { mcpServers: {} };
 fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
 
 // Find and process all server definition files
-const files = glob.sync("mcp-servers/**/*.json");
+const files = glob.sync("registry/**/*.json");
 
 console.log(`Found ${files.length} server definition files:`);
 for (const file of files) {

@@ -28,7 +28,7 @@ console.log(`${colors.cyan}MCP Server Definition Validator${colors.reset}`);
 console.log(`${colors.cyan}================================${colors.reset}\n`);
 
 // Find all server definition files
-const files = glob.sync("mcp-servers/**/*.json");
+const files = glob.sync("registry/**/*.json");
 if (files.length === 0) {
   console.log(
     `${colors.yellow}No server definition files found.${colors.reset}`
